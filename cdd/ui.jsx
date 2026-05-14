@@ -57,8 +57,8 @@ function Card({ children, className = "", style = {}, ...rest }) {
     <div
       className={`card ${className}`}
       style={{
-        background: "rgba(255,255,255,0.035)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        background: "rgba(255,255,255,0.06)",
+        border: "1px solid rgba(255,255,255,0.14)",
         backdropFilter: "blur(24px) saturate(140%)",
         WebkitBackdropFilter: "blur(24px) saturate(140%)",
         borderRadius: 24,
@@ -90,7 +90,7 @@ function CountUp({ to, from = 0, duration = 1.4, delay = 0, format = (v) => Math
 /* ─── Chip ─── */
 function Chip({ children, tone = "default", style = {} }) {
   const tones = {
-    default: { color: "var(--ink-dim)", border: "rgba(255,255,255,0.12)", bg: "rgba(255,255,255,0.03)" },
+    default: { color: "var(--ink-dim)", border: "rgba(255,255,255,0.18)", bg: "rgba(255,255,255,0.05)" },
     accent:  { color: "var(--accent)", border: "rgba(100,210,255,0.35)", bg: "rgba(100,210,255,0.06)" },
     green:   { color: "var(--accent-2)", border: "rgba(48,209,88,0.35)", bg: "rgba(48,209,88,0.06)" },
     warn:    { color: "#FFD60A", border: "rgba(255,214,10,0.35)", bg: "rgba(255,214,10,0.06)" },

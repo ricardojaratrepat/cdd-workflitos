@@ -26,7 +26,7 @@ function SlideHook() {
           position: "absolute", right: 160, top: 220, width: 320, height: 320,
           borderRadius: "50%",
           background: "radial-gradient(circle at 35% 30%, rgba(255,255,255,0.18), rgba(100,210,255,0.08) 40%, rgba(100,210,255,0) 70%)",
-          border: "1px solid rgba(255,255,255,0.08)",
+          border: "1px solid rgba(255,255,255,0.13)",
           boxShadow: "inset 0 0 80px rgba(100,210,255,0.15), 0 40px 120px rgba(100,210,255,0.2)",
           backdropFilter: "blur(10px)",
         }}
@@ -136,7 +136,7 @@ function SlideProblem() {
               variants={fadeUp}
               style={{ position: "relative" }}
             >
-              <Card style={{ padding: 36, minHeight: 240, borderColor: s.tone === "bad" ? "rgba(255,105,97,0.25)" : "rgba(255,255,255,0.08)", background: s.tone === "bad" ? "rgba(255,105,97,0.04)" : "rgba(255,255,255,0.035)" }}>
+              <Card style={{ padding: 36, minHeight: 240, borderColor: s.tone === "bad" ? "rgba(255,105,97,0.25)" : "rgba(255,255,255,0.13)", background: s.tone === "bad" ? "rgba(255,105,97,0.04)" : "rgba(255,255,255,0.10)" }}>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 12, color: s.tone === "bad" ? "#FF6961" : "var(--muted)", letterSpacing: "0.24em" }}>
                   {s.num}
                 </div>
@@ -268,8 +268,8 @@ function SlideSolution() {
               >
                 <Card style={{
                   padding: 28,
-                  borderColor: n.tone === "accent" ? "rgba(100,210,255,0.4)" : n.tone === "green" ? "rgba(48,209,88,0.3)" : n.tone === "warn" ? "rgba(255,214,10,0.3)" : "rgba(255,255,255,0.08)",
-                  background: n.tone === "accent" ? "linear-gradient(180deg, rgba(100,210,255,0.10), rgba(100,210,255,0.02))" : "rgba(255,255,255,0.035)",
+                  borderColor: n.tone === "accent" ? "rgba(100,210,255,0.4)" : n.tone === "green" ? "rgba(48,209,88,0.3)" : n.tone === "warn" ? "rgba(255,214,10,0.3)" : "rgba(255,255,255,0.13)",
+                  background: n.tone === "accent" ? "linear-gradient(180deg, rgba(100,210,255,0.10), rgba(100,210,255,0.02))" : "rgba(255,255,255,0.10)",
                   boxShadow: n.tone === "accent" ? "0 0 40px rgba(100,210,255,0.12)" : "none",
                   position: "relative",
                 }}>
@@ -411,8 +411,8 @@ function SlideHow() {
                 style={{
                   textAlign: "left", cursor: "pointer", border: "none", outline: "none",
                   padding: "22px 28px", borderRadius: 18,
-                  background: active === i ? "linear-gradient(90deg, rgba(100,210,255,0.14), rgba(100,210,255,0.02))" : "rgba(255,255,255,0.025)",
-                  boxShadow: active === i ? "inset 4px 0 0 var(--accent), 0 0 30px rgba(100,210,255,0.12)" : "inset 1px 0 0 rgba(255,255,255,0.06)",
+                  background: active === i ? "linear-gradient(90deg, rgba(100,210,255,0.14), rgba(100,210,255,0.02))" : "rgba(255,255,255,0.05)",
+                  boxShadow: active === i ? "inset 4px 0 0 var(--accent), 0 0 30px rgba(100,210,255,0.12)" : "inset 1px 0 0 rgba(255,255,255,0.10)",
                   color: "var(--ink)",
                   display: "flex", alignItems: "center", gap: 20,
                   transition: "background 0.3s ease, box-shadow 0.3s ease",
@@ -438,7 +438,7 @@ function SlideHow() {
             <Card style={{
               padding: 56,
               height: "100%",
-              background: "radial-gradient(800px 400px at 20% 0%, rgba(100,210,255,0.08), transparent 60%), rgba(255,255,255,0.03)",
+              background: "radial-gradient(800px 400px at 20% 0%, rgba(100,210,255,0.08), transparent 60%), rgba(255,255,255,0.10)",
               overflow: "hidden",
             }}>
               <span style={{
@@ -469,7 +469,7 @@ function SlideHow() {
                   <div style={{ fontFamily: "var(--display)", fontWeight: 300, fontSize: 28, color: "var(--ink)", lineHeight: 1.45, marginTop: 32, maxWidth: 800 }}>
                     {cur.body}
                   </div>
-                  <div style={{ display: "flex", gap: 40, marginTop: 40, paddingTop: 28, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                  <div style={{ display: "flex", gap: 40, marginTop: 40, paddingTop: 28, borderTop: "1px solid rgba(255,255,255,0.13)" }}>
                     {cur.meta.map(([k, v], j) => (
                       <div key={j}>
                         <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--muted)", letterSpacing: "0.22em", textTransform: "uppercase" }}>{k}</div>

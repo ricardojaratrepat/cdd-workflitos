@@ -14,25 +14,28 @@ const SLIDES = [
 
 /* ─── stage that scales 1920×1080 to fit any viewport ─── */
 function Stage({ children }) {
-  const ref = useRefApp(null);
+  const [scale, setScale] = useStateApp(() => {
+    if (typeof window === "undefined") return 1;
+    const sx = window.innerWidth / 1920;
+    const sy = window.innerHeight / 1080;
+    return Math.min(sx, sy);
+  });
   useEffectApp(() => {
     const fit = () => {
-      const el = ref.current;
-      if (!el) return;
       const sx = window.innerWidth / 1920;
       const sy = window.innerHeight / 1080;
-      const s = Math.min(sx, sy);
-      el.style.transform = `translate(-50%, -50%) scale(${s})`;
+      setScale(Math.min(sx, sy));
     };
     fit();
     window.addEventListener("resize", fit);
     return () => window.removeEventListener("resize", fit);
   }, []);
   return (
-    <div ref={ref} style={{
+    <div style={{
       position: "fixed", left: "50%", top: "50%",
       width: 1920, height: 1080,
-      transformOrigin: "0 0",
+      transform: `translate(-50%, -50%) scale(${scale})`,
+      transformOrigin: "50% 50%",
       background: "#000",
       overflow: "hidden",
       borderRadius: 0,
@@ -72,38 +75,45 @@ function Progress({ i, n, onJump }) {
 
 function NavBar({ i, n, onPrev, onNext, label }) {
   return (
-    <m.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.6, duration: 0.8, ease: [0.22, 0.61, 0.36, 1] }}
-      style={{
-        position: "absolute", bottom: 36, left: "50%", transform: "translateX(-50%)",
-        display: "flex", alignItems: "center", gap: 14, zIndex: 50,
-        padding: "10px 14px 10px 18px",
-        background: "rgba(20,20,22,0.65)",
-        border: "1px solid rgba(255,255,255,0.08)",
-        backdropFilter: "blur(20px) saturate(160%)",
-        WebkitBackdropFilter: "blur(20px) saturate(160%)",
-        borderRadius: 999,
-        boxShadow: "0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.06)",
-      }}
-    >
-      <span style={{
-        fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-dim)",
-        letterSpacing: "0.22em", textTransform: "uppercase",
-      }}>
-        <span style={{ color: "var(--accent)" }}>{String(i + 1).padStart(2, "0")}</span>
-        <span style={{ opacity: 0.4 }}> / {String(n).padStart(2, "0")}</span>
-        <span style={{ margin: "0 12px", opacity: 0.3 }}>·</span>
-        <span>{label}</span>
-      </span>
-      <NavBtn onClick={onPrev} disabled={i === 0} aria="Anterior">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-      </NavBtn>
-      <NavBtn onClick={onNext} disabled={i === n - 1} aria="Siguiente" primary>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-      </NavBtn>
-    </m.div>
+    <div style={{
+      position: "absolute", bottom: 36, left: 0, right: 0,
+      display: "flex", justifyContent: "center", zIndex: 50,
+      pointerEvents: "none",
+    }}>
+      <m.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6, duration: 0.8, ease: [0.22, 0.61, 0.36, 1] }}
+        style={{
+          display: "flex", alignItems: "center", gap: 14,
+          padding: "10px 14px",
+          background: "rgba(20,20,22,0.72)",
+          border: "1px solid rgba(255,255,255,0.12)",
+          backdropFilter: "blur(20px) saturate(160%)",
+          WebkitBackdropFilter: "blur(20px) saturate(160%)",
+          borderRadius: 999,
+          boxShadow: "0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)",
+          pointerEvents: "auto",
+        }}
+      >
+        <NavBtn onClick={onPrev} disabled={i === 0} aria="Anterior">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </NavBtn>
+        <span style={{
+          fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-dim)",
+          letterSpacing: "0.22em", textTransform: "uppercase",
+          minWidth: 220, textAlign: "center", whiteSpace: "nowrap",
+        }}>
+          <span style={{ color: "var(--accent)" }}>{String(i + 1).padStart(2, "0")}</span>
+          <span style={{ opacity: 0.5 }}> / {String(n).padStart(2, "0")}</span>
+          <span style={{ margin: "0 12px", opacity: 0.4 }}>·</span>
+          <span>{label}</span>
+        </span>
+        <NavBtn onClick={onNext} disabled={i === n - 1} aria="Siguiente" primary>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </NavBtn>
+      </m.div>
+    </div>
   );
 }
 

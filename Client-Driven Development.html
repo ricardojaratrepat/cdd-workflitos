@@ -11,9 +11,9 @@
   :root{
     --bg:        #000000;
     --bg-2:      #0a0a0c;
-    --ink:       #f5f5f7;
-    --ink-dim:   #a1a1a6;
-    --muted:     #6e6e73;
+    --ink:       #ffffff;
+    --ink-dim:   #c7c7cc;
+    --muted:     #98989d;
     --accent:    #64D2FF;   /* Apple cyan */
     --accent-2:  #30D158;   /* Apple green */
     --display:   "SF Pro Display", -apple-system, BlinkMacSystemFont, "Manrope", system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -106,10 +106,11 @@
           document.head.appendChild(s);
         });
 
-        // Fetch + transform + execute our JSX in strict order
+        // Fetch + transform + execute our JSX in strict order (cache-busted)
+        const cb = Date.now();
         const FILES = ["cdd/ui.jsx", "cdd/slides-a.jsx", "cdd/slides-b.jsx", "cdd/app.jsx"];
         for (const url of FILES) {
-          const src  = await fetch(url).then(r => r.text());
+          const src  = await fetch(url + "?v=" + cb).then(r => r.text());
           const code = window.Babel.transform(src, { presets: ["react"], filename: url }).code;
           const tag  = document.createElement("script");
           tag.text   = code + `\n//# sourceURL=${url}`;

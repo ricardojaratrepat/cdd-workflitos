@@ -107,7 +107,7 @@ function SlideAgent() {
           <motion.div variants={fadeUp}>
             <div style={{
               background: "rgba(0,0,0,0.65)",
-              border: "1px solid rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.13)",
               borderRadius: 24,
               overflow: "hidden",
               fontFamily: "var(--mono)", fontSize: 17, lineHeight: 1.55, color: "#cfe5ff",
@@ -116,8 +116,8 @@ function SlideAgent() {
             }}>
               <div style={{
                 display: "flex", alignItems: "center", gap: 8, padding: "14px 20px",
-                borderBottom: "1px solid rgba(255,255,255,0.08)",
-                background: "rgba(255,255,255,0.025)",
+                borderBottom: "1px solid rgba(255,255,255,0.13)",
+                background: "rgba(255,255,255,0.05)",
                 fontSize: 12, color: "var(--ink-dim)", letterSpacing: "0.18em", textTransform: "uppercase",
               }}>
                 <span style={{ width: 12, height: 12, borderRadius: 12, background: "#FF6F7A" }} />
@@ -335,7 +335,7 @@ function SlideRubric() {
               <Card style={{
                 padding: 36, borderRadius: 24, display: "flex", flexDirection: "column", flex: 1,
                 borderColor: "rgba(100,210,255,0.25)",
-                background: "linear-gradient(180deg, rgba(100,210,255,0.05), rgba(255,255,255,0.025))",
+                background: "linear-gradient(180deg, rgba(100,210,255,0.05), rgba(255,255,255,0.05))",
                 boxShadow: "0 0 40px rgba(100,210,255,0.08)",
               }}>
                 <div style={{ fontFamily: "var(--mono)", fontSize: 13, color: "var(--muted)", letterSpacing: "0.24em" }}>
@@ -351,7 +351,7 @@ function SlideRubric() {
                   {c.why}
                 </div>
 
-                <div style={{ marginTop: 28, height: 8, background: "rgba(255,255,255,0.06)", borderRadius: 999, overflow: "hidden" }}>
+                <div style={{ marginTop: 28, height: 8, background: "rgba(255,255,255,0.10)", borderRadius: 999, overflow: "hidden" }}>
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${c.pct}%` }}
