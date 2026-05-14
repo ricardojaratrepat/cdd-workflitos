@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<title>Client-Driven Development · Workflitos · Bukathon</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:        #000000;
+    --bg-2:      #0a0a0c;
+    --ink:       #f5f5f7;
+    --ink-dim:   #a1a1a6;
+    --muted:     #6e6e73;
+    --accent:    #64D2FF;   /* Apple cyan */
+    --accent-2:  #30D158;   /* Apple green */
+    --display:   "SF Pro Display", -apple-system, BlinkMacSystemFont, "Manrope", system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --mono:      "SF Mono", "JetBrains Mono", ui-monospace, "Menlo", monospace;
+  }
+  *,*::before,*::after{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:#000; color:var(--ink); font-family:var(--display); overflow:hidden; }
+  body{
+    /* very subtle ambient */
+    background:
+      radial-gradient(1200px 700px at 25% 0%, rgba(100,210,255,0.05), transparent 60%),
+      radial-gradient(900px 600px at 90% 100%, rgba(10,132,255,0.04), transparent 60%),
+      #000;
+  }
+  button{ font-family:inherit; }
+
+  /* loading splash */
+  .splash{
+    position:fixed; inset:0; display:grid; place-items:center;
+    z-index:200;
+    background:
+      radial-gradient(800px 500px at 50% 50%, rgba(100,210,255,0.10), transparent 60%),
+      #000;
+    transition: opacity 0.8s ease;
+    pointer-events:none;
+  }
+  .splash.gone{ opacity:0; }
+  .splash .mark{
+    font-family:var(--mono); font-size:14px; letter-spacing:0.35em; text-transform:uppercase; color:var(--muted);
+  }
+  .splash .dot{
+    width:8px; height:8px; border-radius:50%; background:var(--accent);
+    box-shadow:0 0 18px var(--accent);
+    margin-right:14px; display:inline-block; vertical-align:middle;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1; transform:scale(1)} 50%{opacity:.4; transform:scale(.8)} }
+
+  /* hide React noise text */
+  ::selection{ background: rgba(100,210,255,0.3); color:#fff; }
+
+  /* normalize buttons */
+  button{ font-family:inherit; }
+</style>
+
+<template id="__bundler_thumbnail">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <rect width="200" height="200" fill="#000"/>
+    <circle cx="100" cy="100" r="60" fill="none" stroke="#64D2FF" stroke-width="1.5"/>
+    <circle cx="100" cy="100" r="40" fill="none" stroke="#64D2FF" stroke-width="1" opacity="0.6"/>
+    <circle cx="100" cy="100" r="20" fill="#64D2FF" opacity="0.8"/>
+    <text x="100" y="180" font-family="monospace" font-size="9" fill="#64D2FF" text-anchor="middle" letter-spacing="2">CDD · WORKFLITOS</text>
+  </svg>
+</template>
+</head>
+
+<body>
+
+  <div class="splash" id="splash">
+    <div class="mark"><span class="dot"></span>CDD · Workflitos · Iniciando</div>
+  </div>
+
+  <div id="root"></div>
+
+  <!-- importmap so framer-motion + react share a single React instance -->
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@18.3.1",
+      "react/jsx-runtime": "https://esm.sh/react@18.3.1/jsx-runtime",
+      "react-dom": "https://esm.sh/react-dom@18.3.1",
+      "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+      "framer-motion": "https://esm.sh/framer-motion@11.18.0?external=react,react-dom"
+    }
+  }
+  </script>
+
+  <!-- bootstrap: resolve ESM deps, then Babel, then our JSX -->
+  <script type="module">
+    (async () => {
+      try {
+        const ReactNS         = await import("react");
+        const ReactDOMClient  = await import("react-dom/client");
+        const FramerMotion    = await import("framer-motion");
+        window.React          = ReactNS.default || ReactNS;
+        // some bundlers wrap default; make sure named exports are also on .React
+        for (const k of Object.keys(ReactNS))     if (!(k in window.React)) window.React[k] = ReactNS[k];
+        window.ReactDOM       = ReactDOMClient.default || ReactDOMClient;
+        for (const k of Object.keys(ReactDOMClient)) if (!(k in window.ReactDOM)) window.ReactDOM[k] = ReactDOMClient[k];
+        window.FramerMotion   = FramerMotion.default ? Object.assign({}, FramerMotion, FramerMotion.default) : FramerMotion;
+
+        // Load Babel standalone (pinned)
+        await new Promise((res, rej) => {
+          const s = document.createElement("script");
+          s.src = "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js";
+          s.onload = res; s.onerror = rej;
+          document.head.appendChild(s);
+        });
+
+        // Fetch + transform + execute our JSX in strict order
+        const FILES = ["cdd/ui.jsx", "cdd/slides-a.jsx", "cdd/slides-b.jsx", "cdd/app.jsx"];
+        for (const url of FILES) {
+          const src  = await fetch(url).then(r => r.text());
+          const code = window.Babel.transform(src, { presets: ["react"], filename: url }).code;
+          const tag  = document.createElement("script");
+          tag.text   = code + `\n//# sourceURL=${url}`;
+          document.body.appendChild(tag);
+        }
+
+        // dismiss splash
+        const splash = document.getElementById("splash");
+        if (splash) {
+          splash.classList.add("gone");
+          setTimeout(() => splash.remove(), 900);
+        }
+      } catch (err) {
+        console.error("Bootstrap failed:", err);
+        const splash = document.getElementById("splash");
+        if (splash) splash.innerHTML = `<div style="color:#FF6961; font-family: var(--mono); font-size:14px; text-align:center; max-width:600px; padding:0 40px;">Error iniciando el deck:<br/><br/>${(err && err.message) || err}</div>`;
+      }
+    })();
+  </script>
+
+</body>
+</html>
