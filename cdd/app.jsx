@@ -3,13 +3,15 @@ const { motion: m, AnimatePresence: AP } = window.FramerMotion || window.framerM
 const { useState: useStateApp, useEffect: useEffectApp, useCallback: useCallbackApp, useRef: useRefApp } = React;
 
 const SLIDES = [
-  { id: "hook",     C: window.SlideHook,     label: "Hook" },
-  { id: "problem",  C: window.SlideProblem,  label: "Problema" },
-  { id: "solution", C: window.SlideSolution, label: "Solución" },
-  { id: "how",      C: window.SlideHow,      label: "Cómo funciona" },
-  { id: "agent",    C: window.SlideAgent,    label: "Agente" },
-  { id: "value",    C: window.SlideValue,    label: "Valor" },
-  { id: "end",      C: window.SlideEnd,      label: "Cierre" },
+  { id: "legacy",     C: window.SlideLegacy,     label: "" },
+  { id: "hook",       C: window.SlideHook,       label: "" },
+  { id: "problem",    C: window.SlideProblem,    label: "Problema" },
+  { id: "solution",   C: window.SlideSolution,   label: "Solución" },
+  { id: "how",        C: window.SlideHow,        label: "Cómo funciona" },
+  { id: "classifier", C: window.SlideClassifier, label: "Clasificador" },
+  { id: "agent",      C: window.SlideAgent,      label: "Workflito" },
+  { id: "value",      C: window.SlideValue,      label: "Valor" },
+  { id: "end",        C: window.SlideEnd,        label: "Cierre" },
 ];
 
 /* ─── stage that scales 1920×1080 to fit any viewport ─── */
@@ -36,7 +38,7 @@ function Stage({ children }) {
       width: 1920, height: 1080,
       transform: `translate(-50%, -50%) scale(${scale})`,
       transformOrigin: "50% 50%",
-      background: "#000",
+      background: "#FFFFFF",
       overflow: "hidden",
       borderRadius: 0,
     }}>
@@ -64,7 +66,7 @@ function Progress({ i, n, onJump }) {
           aria-label={`Slide ${k + 1}`}
           style={{
             flex: 1, height: 2, padding: 0, border: "none", cursor: "pointer",
-            background: k <= i ? "linear-gradient(90deg, #64D2FF, #0A84FF)" : "rgba(255,255,255,0.06)",
+            background: k <= i ? "linear-gradient(90deg, #6C87D8, #2F4DAA)" : "rgba(0,0,0,0.08)",
             transition: "background 0.6s cubic-bezier(0.22,0.61,0.36,1)",
           }}
         />
@@ -87,28 +89,30 @@ function NavBar({ i, n, onPrev, onNext, label }) {
         style={{
           display: "flex", alignItems: "center", gap: 14,
           padding: "10px 14px",
-          background: "rgba(20,20,22,0.72)",
-          border: "1px solid rgba(255,255,255,0.12)",
+          background: "rgba(255,255,255,0.92)",
+          border: "1px solid #E4E5E7",
           backdropFilter: "blur(20px) saturate(160%)",
           WebkitBackdropFilter: "blur(20px) saturate(160%)",
           borderRadius: 999,
-          boxShadow: "0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.08)",
+          boxShadow: "0 12px 36px rgba(9,19,81,0.12), 0 2px 6px rgba(9,19,81,0.06)",
           pointerEvents: "auto",
         }}
       >
         <NavBtn onClick={onPrev} disabled={i === 0} aria="Anterior">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </NavBtn>
-        <span style={{
-          fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-dim)",
-          letterSpacing: "0.22em", textTransform: "uppercase",
-          minWidth: 220, textAlign: "center", whiteSpace: "nowrap",
-        }}>
-          <span style={{ color: "var(--accent)" }}>{String(i + 1).padStart(2, "0")}</span>
-          <span style={{ opacity: 0.5 }}> / {String(n).padStart(2, "0")}</span>
+      <span style={{
+        fontFamily: "var(--mono)", fontSize: 12, color: "var(--ink-dim)",
+        letterSpacing: "0.22em", textTransform: "uppercase",
+        minWidth: 200, textAlign: "center", whiteSpace: "nowrap",
+      }}>
+        <span style={{ color: "var(--accent)" }}>{String(i + 1).padStart(2, "0")}</span>
+        <span style={{ opacity: 0.5 }}> / {String(n).padStart(2, "0")}</span>
+        {label && (<>
           <span style={{ margin: "0 12px", opacity: 0.4 }}>·</span>
           <span>{label}</span>
-        </span>
+        </>)}
+      </span>
         <NavBtn onClick={onNext} disabled={i === n - 1} aria="Siguiente" primary>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </NavBtn>
@@ -128,11 +132,11 @@ function NavBtn({ children, onClick, disabled, primary, aria }) {
       transition={{ type: "spring", stiffness: 400, damping: 22 }}
       style={{
         width: 36, height: 36, borderRadius: "50%", border: "none", cursor: disabled ? "default" : "pointer",
-        background: primary ? "linear-gradient(135deg, #64D2FF, #0A84FF)" : "rgba(255,255,255,0.08)",
-        color: primary ? "#0b0e15" : "var(--ink)",
+        background: primary ? "linear-gradient(135deg, #2F4DAA, #172A7A)" : "#F0F1F3",
+        color: primary ? "#FFFFFF" : "var(--ink)",
         display: "grid", placeItems: "center", outline: "none",
         opacity: disabled ? 0.3 : 1,
-        boxShadow: primary && !disabled ? "0 6px 20px rgba(100,210,255,0.35)" : "none",
+        boxShadow: primary && !disabled ? "0 6px 20px rgba(108,135,216,0.35)" : "none",
       }}
     >
       {children}

@@ -57,11 +57,9 @@ function Card({ children, className = "", style = {}, ...rest }) {
     <div
       className={`card ${className}`}
       style={{
-        background: "rgba(255,255,255,0.06)",
-        border: "1px solid rgba(255,255,255,0.14)",
-        backdropFilter: "blur(24px) saturate(140%)",
-        WebkitBackdropFilter: "blur(24px) saturate(140%)",
-        borderRadius: 24,
+        background: "#FFFFFF",
+        border: "1px solid #E4E5E7",
+        borderRadius: 12,
         ...style,
       }}
       {...rest}
@@ -90,11 +88,11 @@ function CountUp({ to, from = 0, duration = 1.4, delay = 0, format = (v) => Math
 /* ─── Chip ─── */
 function Chip({ children, tone = "default", style = {} }) {
   const tones = {
-    default: { color: "var(--ink-dim)", border: "rgba(255,255,255,0.18)", bg: "rgba(255,255,255,0.05)" },
-    accent:  { color: "var(--accent)", border: "rgba(100,210,255,0.35)", bg: "rgba(100,210,255,0.06)" },
-    green:   { color: "var(--accent-2)", border: "rgba(48,209,88,0.35)", bg: "rgba(48,209,88,0.06)" },
-    warn:    { color: "#FFD60A", border: "rgba(255,214,10,0.35)", bg: "rgba(255,214,10,0.06)" },
-    red:     { color: "#FF6961", border: "rgba(255,105,97,0.35)", bg: "rgba(255,105,97,0.06)" },
+    default: { color: "var(--ink-dim)", border: "#C1C2C4", bg: "#F6F7F9" },
+    accent:  { color: "var(--accent)", border: "rgba(108,135,216,0.35)", bg: "rgba(108,135,216,0.06)" },
+    green:   { color: "var(--accent-2)", border: "rgba(107,198,76,0.35)", bg: "rgba(107,198,76,0.06)" },
+    warn:    { color: "#F99304", border: "rgba(249,147,4,0.35)", bg: "rgba(249,147,4,0.06)" },
+    red:     { color: "#F95E50", border: "rgba(249,94,80,0.35)", bg: "rgba(249,94,80,0.06)" },
   }[tone];
   return (
     <span style={{
