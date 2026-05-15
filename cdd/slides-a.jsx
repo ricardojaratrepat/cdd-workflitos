@@ -93,7 +93,7 @@ function SlideHook() {
             color: "var(--ink-dim)", textTransform: "uppercase", textAlign: "right", lineHeight: 1.9,
           }}>
             Buk · Workflitos<br/>
-            14 · 05 · 2026<br/>
+            15 · 05 · 2026<br/>
             v0.1 · Live demo
           </div>
         </motion.div>
